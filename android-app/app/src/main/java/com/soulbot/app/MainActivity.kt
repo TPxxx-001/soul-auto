@@ -41,9 +41,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         applyToolbarInsets()
         memoryDb = ConversationMemoryDatabase(applicationContext)
-        HistoryDatabase(applicationContext).use { history ->
-            memoryDb.seedLegacyHistory(history.getAll())
-        }
+        val history = HistoryDatabase(applicationContext)
+try {
+    memoryDb.seedLegacyHistory(history.getAll())
+} finally {
+    history.close()
+}
+    
+
+           
+        
 
         tvRuntimeTitle = findViewById(R.id.tvRuntimeTitle)
         tvRuntimeDetail = findViewById(R.id.tvRuntimeDetail)
